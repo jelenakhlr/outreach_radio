@@ -6,15 +6,9 @@ from matplotlib.widgets import Button
 import matplotlib as mpl
 # fancy plots
 from matplotlib import rc
-from cycler import cycler
-import cmasher as cmr
 rc('font', **{'family':'serif','serif':['Palatino']})
-rc('text', usetex=True)
+rc('text', usetex=False)
 rc('font', size = 11.0)
-n = 3 # Number of colors
-new_colors = [plt.get_cmap('cmr.bubblegum')(1. * i/n) for i in range(n)]
-mpl.rcParams['axes.prop_cycle'] = cycler('color', new_colors)
-import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 
@@ -62,7 +56,7 @@ receivers_df = distance(transmitter, gp300)
 
 fig, ax = plt.subplots()
 plt.scatter(receivers_df['position_x'], receivers_df['position_y'], c=receivers_df['distance_to_transmitter'],
-            cmap=cmr.gothic, marker='o', s=20, norm=mpl.colors.LogNorm())
+            cmap="plasma", marker='o', s=20, norm=mpl.colors.LogNorm())
 # Add colorbar
 cbar = plt.colorbar()
 cbar.set_label("signal strength")
