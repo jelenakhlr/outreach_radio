@@ -4,32 +4,41 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 import matplotlib as mpl
-# fancy plots
 from matplotlib import rc
-rc('font', **{'family':'serif','serif':['Palatino']})
+# fancy plots
 rc('text', usetex=False)
 rc('font', size = 11.0)
 from matplotlib.widgets import Button
 
+fig, ax = plt.subplots()
 
 # Function to handle user clicks
 def on_click(event):
     transmitter_x, transmitter_y = transmitter[0], transmitter[1]
     clicked_x = event.xdata
     clicked_y = event.ydata
+    print(clicked_x)
     distance_to_transmitter = abs(clicked_x - transmitter_x) + abs(clicked_y - transmitter_y)
-    # Define a threshold distance to consider a close guess (adjust as needed)
-    threshold = 5.0  # Adjust this value based on your plot scale and desired sensitivity
-
+    threshold = 50.0  # Adjust this value based on your plot scale and desired sensitivity
+    
     if distance_to_transmitter <= threshold:
-        print(f"Correct! You found the transmitter location.")
+        ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
+        text="Correct! You found the transmitter location."
+        props = dict (boxstyle = 'round' , facecolor = "white")
+        ax.text(1.1, 0.99, text , transform = ax.transAxes,
+        verticalalignment = 'top' , bbox = props)
+        plt.show()
+        
     else:
-        print(f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})")
-        print(f"Try again! The transmitter might be closer to one of the stronger signal areas.")
+        ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
+        text=f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})\n Try again! The transmitter might be closer to one of the stronger signal areas."
+        props = dict (boxstyle = 'round' , facecolor = "white")
+        ax.text(1.1, 0.99, text , transform = ax.transAxes,
+        verticalalignment = 'top' , bbox = props)
     return 
 
 def distance(transmitter, gp300):
-    receivers = pd.DataFrame(columns=['position_x', 'position_y', 'distance_to_transmitter', 'signal_strength'])
+    antennas = pd.DataFrame(columns=['position_x', 'position_y', 'distance_to_transmitter', 'signal_strength'])
     antenna_position_x = gp300[:,2]
     antenna_position_y = gp300[:,3]
     N = len(antenna_position_x) - 1
@@ -37,15 +46,16 @@ def distance(transmitter, gp300):
         position_x = antenna_position_x[station]*10**-4
         position_y = antenna_position_y[station]*10**-4
         position_xy = np.array([position_x, position_y])
-        distance   = np.linalg.norm(np.array([position_xy, transmitter]))
+        distance   = np.sqrt((transmitter[0]-position_x)**2 + (transmitter[1]-position_y)**2)
         signal_strength = 1/distance
-        receivers = receivers.append({
+        antennas = antennas.append({
             'position_x' : position_x, 
             'position_y' : position_y, 
             'distance_to_transmitter' : distance, 
             'signal_strength' : signal_strength
             }, ignore_index=True)
-    return receivers
+    return antennas
+
 
 gp300 = np.genfromtxt("gp300.list")
 
@@ -53,19 +63,20 @@ transmitter = np.array([random.random()*100, random.random()*100])
 receivers_df = distance(transmitter, gp300)
 
 
-
-fig, ax = plt.subplots()
-plt.scatter(receivers_df['position_x'], receivers_df['position_y'], c=receivers_df['distance_to_transmitter'],
-            cmap="plasma", marker='o', s=20, norm=mpl.colors.LogNorm())
+plt.scatter(receivers_df['position_x'], receivers_df['position_y'], c=receivers_df['signal_strength'],
+            cmap="gist_ncar", marker='o', s=20, alpha=0.5, label="gp300")
 # Add colorbar
 cbar = plt.colorbar()
 cbar.set_label("signal strength")
+
 
 # Call `on_click` when user clicks anywhere on the plot
 cid = fig.canvas.mpl_connect('button_press_event', on_click)
 
 plt.title('Radio Signal Strength (Click to Guess Transmitter Location)')
 plt.axis('equal')
-plt.xlabel('Position X')
+plt.xlabel('Position X') 
 plt.ylabel('Position Y')
+plt.legend()
 plt.show()
+
