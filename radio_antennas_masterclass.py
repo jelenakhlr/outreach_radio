@@ -39,8 +39,8 @@ def on_click(event):
 
 def distance(transmitter, gp300):
     antennas = pd.DataFrame(columns=['position_x', 'position_y', 'distance_to_transmitter', 'signal_strength'])
-    antenna_position_x = gp300[:,2]
-    antenna_position_y = gp300[:,3]
+    antenna_position_x = [:,2]
+    antenna_position_y = [:,3]
     N = len(antenna_position_x)-1
     for station in range(N):
         position_x = antenna_position_x[station]*10**-4
@@ -61,9 +61,14 @@ gp300 = np.genfromtxt("real.list")
 transmitter = np.array([random.random()*100, random.random()*100])
 receivers_df = distance(transmitter, gp300)
 
-
+AntennaPosition1 = np.array([random.random()*100, random.random()*100])
+AntennaPosition2 = np.array([random.random()*100, random.random()*100])
+AntennaPosition3 = np.array([random.random()*100, random.random()*100]) 
+                     
 plt.scatter(receivers_df['position_x'], receivers_df['position_y'], c=receivers_df['signal_strength'],
             cmap="gist_ncar", marker='o', s=20, alpha=0.5, label="antennas")
+ 
+
 # Add colorbar
 cbar = plt.colorbar()
 cbar.set_label("signal strength")
