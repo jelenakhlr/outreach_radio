@@ -22,20 +22,22 @@ def on_click(event):
     threshold = 50.0  # Adjust this value based on your plot scale and desired sensitivity
     
     if distance_to_transmitter <= threshold:
-        ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
+        ax.scatter(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
         text="Correct! You found the transmitter location."
         props = dict (boxstyle = 'round' , facecolor = "white")
         ax.text(1.1, 0.99, text , transform = ax.transAxes,
         verticalalignment = 'top' , bbox = props)
-        plt.show()
+        plt.legend()
         
     else:
-        ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
         text=f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})\n Try again! The transmitter might be closer to one of the stronger signal areas."
         props = dict (boxstyle = 'round' , facecolor = "white")
         ax.text(1.1, 0.99, text , transform = ax.transAxes,
         verticalalignment = 'top' , bbox = props)
-    return 
+
+    fig.canvas.draw_idle()  # Trigger redrawing
+    fig.canvas.flush_events()  # Process events for a smooth update
+    return True
 
 def distance(transmitter, gp300):
     antennas = pd.DataFrame(columns=['position_x', 'position_y', 'distance_to_transmitter', 'signal_strength'])
@@ -64,7 +66,8 @@ receivers_df = distance(transmitter, gp300)
 
 
 plt.scatter(receivers_df['position_x'], receivers_df['position_y'], c=receivers_df['signal_strength'],
-            cmap="gist_ncar", marker='o', s=20, alpha=0.5, label="gp300")
+            cmap="gist_ncar", marker='o', s=20, label="gp300")
+
 # Add colorbar
 cbar = plt.colorbar()
 cbar.set_label("signal strength")
