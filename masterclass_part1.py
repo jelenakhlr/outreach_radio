@@ -80,7 +80,7 @@ def distance(transmitter, gp300):
 
 gp300 = np.genfromtxt("gp300.list")
 
-transmitter = np.array([random.random() * 100, random.random() * 100])
+transmitter = np.array([np.random.randint(0,80), np.random.randint(0,80)])
 receivers_df = distance(transmitter, gp300)
 
 
