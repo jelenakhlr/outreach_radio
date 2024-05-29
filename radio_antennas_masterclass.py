@@ -11,50 +11,46 @@ rc('font', size = 11.0)
 from matplotlib.widgets import Button
 
 fig, ax = plt.subplots()
+transmitter = np.array([np.random.randint(5,35), np.random.randint(5,35)])
+
+AntennaPosition1 = np.array([5,15])
+AntennaPosition2 = np.array([15,30])
+AntennaPosition3 = np.array([15,5]) 
 
 # Function to handle user clicks
 def on_click(event):
     transmitter_x, transmitter_y = transmitter[0], transmitter[1]
     clicked_x = event.xdata
     clicked_y = event.ydata
-    distance_to_transmitter = abs(clicked_x - transmitter_x) + abs(clicked_y - transmitter_y)
-    threshold = 50.0  # Adjust this value based on your plot scale and desired sensitivity
+    distance_to_transmitter = np.sqrt(((clicked_x - transmitter_x) ** 2) + ((clicked_y - transmitter_y) ** 2))
+    threshold = 10.0  # Adjust this value based on your plot scale and desired sensitivity
     
     if distance_to_transmitter <= threshold:
         ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
-        text="Correct! You found the transmitter location."
-        props = dict (boxstyle = 'round' , facecolor = "white")
-        ax.text(1.1, 0.99, text , transform = ax.transAxes,
-        verticalalignment = 'top' , bbox = props)
-        plt.show()
-        
+        text1="Correct! You found the transmitter location."
+        props = dict(boxstyle = 'round' , facecolor = "white")
+        ax.text(1.1, 0.99, text1, transform = ax.transAxes, verticalalignment = 'top' , bbox = props)
+        plt.legend()
+
     else:
-        ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
-        text=f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})\n Try again! The transmitter might be closer to one of the stronger signal areas."
+        text2=f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})\n Try again! The transmitter might be closer to one of the stronger signal areas."
         props = dict (boxstyle = 'round' , facecolor = "white")
-        ax.text(1.1, 0.99, text , transform = ax.transAxes,
-        verticalalignment = 'top' , bbox = props)
-    return 
+        ax.text(1.1, 0.99, text2, transform = ax.transAxes, verticalalignment = 'top' , bbox = props)
+
+    fig.canvas.draw_idle()  # Trigger redrawing
+    fig.canvas.flush_events()  # Process events for a smooth update
+    return True
+
 
 def signal_strength(antenna_position_x, antenna_position_y):
     distance   = np.sqrt((transmitter[0]-antenna_position_x)**2 + (transmitter[1]-antenna_position_y)**2)
     signal_strength = 1/distance
     return signal_strength
 
-AntennaPosition1 = np.array([5,15])
-AntennaPosition2 = np.array([15,30])
-AntennaPosition3 = np.array([15,5]) 
-print(AntennaPosition1, AntennaPosition2, AntennaPosition3)
 
-antennas = pd.DataFrame({
-    'position_x': np.array([AntennaPosition1[0], AntennaPosition2[0], AntennaPosition3[0]]),
-    'position_y': np.array([AntennaPosition1[1], AntennaPosition2[1], AntennaPosition3[1]])
-})
-
-transmitter = np.array([np.random.randint(0,35), np.random.randint(0,35)])
 receivers_df = pd.DataFrame({
-    'position_x': antennas['position_x'],
-    'position_y': antennas['position_y'],
+    'position_x': np.array([AntennaPosition1[0], AntennaPosition2[0], AntennaPosition3[0]]),
+    'position_y': np.array([AntennaPosition1[1], AntennaPosition2[1], AntennaPosition3[1]]),
     'signal_strength': np.array([signal_strength(AntennaPosition1[0], AntennaPosition1[1]), signal_strength(AntennaPosition2[0], AntennaPosition2[1]), signal_strength(AntennaPosition3[0], AntennaPosition3[1])])
 })
 
