@@ -21,8 +21,8 @@ Part 2: Explore the concept of signal strength and how it varies with distance u
 ### Prerequisites:
 
 Python 3.x\
-NumPy library (```pip install numpy```)
-Matplotlib library (```pip install matplotlib```)
+NumPy library (```pip install numpy```)\
+Matplotlib library (```pip install matplotlib```)\
 Pandas library (```pip install pandas```)
 
 ### Execution:
@@ -32,6 +32,7 @@ Open a terminal window in the directory.\
 Run each part of the code using the following commands:
 
     python masterclass_part1.py
+    
     python masterclass_part2.py
 
 
