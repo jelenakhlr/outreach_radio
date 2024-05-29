@@ -26,7 +26,7 @@ def on_click(event):
     threshold = 10.0  # Adjust this value based on your plot scale and desired sensitivity
     
     if distance_to_transmitter <= threshold:
-        ax.plot(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
+        ax.scatter(transmitter_x, transmitter_y, marker="x", color='r', label="transmitter")
         text1="Correct! You found the transmitter location."
         props = dict(boxstyle = 'round' , facecolor = "white")
         ax.text(1.1, 0.99, text1, transform = ax.transAxes, verticalalignment = 'top' , bbox = props)
