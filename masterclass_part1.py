@@ -1,8 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import random
-import matplotlib.pyplot as plt
-from matplotlib.widgets import Button
 from matplotlib import rc
 
 rc("text", usetex=False)
@@ -30,7 +28,7 @@ def on_click(event):
         text = "Correct! You found the transmitter location."
         props = dict(boxstyle="round", facecolor="white")
         ax.text(
-            1.1, 0.99, text, transform=ax.transAxes, verticalalignment="top", bbox=props
+            0.0, 0.0, text, transform=ax.transAxes, verticalalignment="top", bbox=props
         )
         plt.legend()
 
@@ -38,7 +36,7 @@ def on_click(event):
         text = f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})\n Try again! The transmitter might be closer to one of the stronger signal areas."
         props = dict(boxstyle="round", facecolor="white")
         ax.text(
-            1.1, 0.99, text, transform=ax.transAxes, verticalalignment="top", bbox=props
+            0.0, 0.0, text, transform=ax.transAxes, verticalalignment="top", bbox=props
         )
 
     fig.canvas.draw_idle()  # Trigger redrawing
@@ -61,7 +59,6 @@ def distance(transmitter, gp300):
     for station in range(N):
         position_x = antenna_position_x[station] * 10 ** -4
         position_y = antenna_position_y[station] * 10 ** -4
-        position_xy = np.array([position_x, position_y])
         distance = np.sqrt(
             (transmitter[0] - position_x) ** 2 + (transmitter[1] - position_y) ** 2
         )
@@ -80,7 +77,7 @@ def distance(transmitter, gp300):
 
 gp300 = np.genfromtxt("gp300.list")
 
-transmitter = np.array([np.random.randint(0,80), np.random.randint(0,80)])
+transmitter = np.array([np.random.randint(0, 80), np.random.randint(0, 80)])
 receivers_df = distance(transmitter, gp300)
 
 
@@ -88,10 +85,9 @@ plt.scatter(
     receivers_df["position_x"],
     receivers_df["position_y"],
     c=receivers_df["signal_strength"],
-    cmap="gist_ncar",
+    cmap="plasma",
     marker="o",
     s=20,
-    label="gp300",
 )
 
 # Add colorbar
@@ -106,5 +102,5 @@ plt.title("Radio Signal Strength (Click to Guess Transmitter Location)")
 plt.axis("equal")
 plt.xlabel("Position X")
 plt.ylabel("Position Y")
-plt.legend()
+plt.tight_layout()
 plt.show()

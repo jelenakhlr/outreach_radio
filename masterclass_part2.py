@@ -1,7 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.widgets import Button
 from matplotlib import rc
 
 # fancy plots
@@ -24,7 +23,7 @@ def on_click(event):
         ((clicked_x - transmitter_x) ** 2) + ((clicked_y - transmitter_y) ** 2)
     )
     threshold = (
-        10.0  # Adjust this value based on your plot scale and desired sensitivity
+        5.0  # Adjust this value based on your plot scale and desired sensitivity
     )
 
     if distance_to_transmitter <= threshold:
@@ -34,8 +33,8 @@ def on_click(event):
         text1 = "Correct! You found the transmitter location."
         props = dict(boxstyle="round", facecolor="white")
         ax.text(
-            1.1,
-            0.99,
+            0.0,
+            0.0,
             text1,
             transform=ax.transAxes,
             verticalalignment="top",
@@ -47,8 +46,8 @@ def on_click(event):
         text2 = f"You clicked at: ({clicked_x:.2f}, {clicked_y:.2f})\n Try again! The transmitter might be closer to one of the stronger signal areas."
         props = dict(boxstyle="round", facecolor="white")
         ax.text(
-            1.1,
-            0.99,
+            0.0,
+            0.0,
             text2,
             transform=ax.transAxes,
             verticalalignment="top",
@@ -95,7 +94,7 @@ plt.scatter(
     cmap="plasma",
     marker="o",
     edgecolors="black",
-    s=20,
+    s=40,
     label="antennas",
 )
 
