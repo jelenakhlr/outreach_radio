@@ -23,7 +23,6 @@ def plot_event(event, event_number):
         event (pd.DataFrame): The DataFrame containing event data.
         event_number (int): The event ID to plot.
     """
-    title = f"Event {event_number}"
     
     # Filter the data for the selected event
     event_mask = (event["eventID"] == event_number) 
@@ -64,7 +63,7 @@ def plot_event(event, event_number):
                          marker='o', s=50, norm=norm, cmap=cmap)
     main_ax.set_xlabel('x position in m')
     main_ax.set_ylabel('y position in m')
-    main_ax.set_title(f'{title} - Event {event_number}\nE={energy:.2e} eV, ' + rf'$\theta$={theta}, $\varphi$={phi}')
+    main_ax.set_title(f'Event {event_number}\nE={energy:.2e} eV, ' + rf'$\theta$={theta}, $\varphi$={phi}')
 
     # Add a colorbar
     cbar = fig.colorbar(sc, ax=main_ax, orientation='vertical')
