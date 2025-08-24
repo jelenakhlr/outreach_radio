@@ -8,15 +8,15 @@ Jelena Köhler, @jelenakhlr
 
 ## Learning Objectives:
 
-Part 0: Explore the concept of signal strength and how it varies with distance using few antennas.
+Part 0: Explore the concept of signal strength and how it varies with distance using few antennas.\
 Part 1: Understand how the GP300 array of antennas can be used to locate a radio transmitter.\
 Part 2: Observe radio signals emitted from air showers on the GP300 array.
 
 ## Code Structure:
 
-```masterclass_part0.py```: Simulates radio signal detection using three individual antennas.
+```masterclass_part0.py```: Simulates radio signal detection using three individual antennas.\
 ```masterclass_part1.py```: Simulates radio signal detection using a GP300 antenna layout.\
-```masterclass_part2.py''': Visualizes radio signals emitted from cosmic ray air showers for both time and signal strength distributions.
+```masterclass_part2.py```: Visualizes radio signals emitted from cosmic ray air showers for both time and signal strength distributions.
 
 ## Running the Code:
 
