@@ -8,7 +8,7 @@ Jelena Köhler, @jelenakhlr
 
 ## Learning Objectives:
 
-Part 0: Explore the concept of signal strength and how it varies with distance using few antennas.
+Part 0: Explore the concept of signal strength and how it varies with distance using few antennas.\
 Part 1: Understand how the GP300 array of antennas can be used to locate a radio transmitter.\
 Part 2: Observe radio signals emitted from air showers on the GP300 array.
 
