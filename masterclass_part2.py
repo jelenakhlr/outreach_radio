@@ -96,7 +96,7 @@ def plot_event(event, event_number):
 
 if __name__ == "__main__":
     # Load the data
-    file = pd.read_csv("/Users/jelenapetereit/work/GRAND_DB/database.csv")
+    file = pd.read_csv("database.csv")
     events = sorted(file["eventID"].unique())
     # Select an event to display
     print("Available events:", events)
